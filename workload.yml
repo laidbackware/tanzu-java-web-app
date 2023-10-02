@@ -1,0 +1,27 @@
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: tanzu-java-web-app-null
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: tanzu-java-web-app
+    apps.tanzu.vmware.com/has-tests: true
+    apps.tanzu.vmware.com/pipeline: tanzu-java-web-app-test
+spec:
+  params:
+    - name: annotations
+      value: 
+        autoscaling.knative.dev/minScale: "1"
+    - name: testing_pipeline_matching_labels
+      value:
+        apps.tanzu.vmware.com/pipeline: tanzu-java-web-app-test
+  build:
+      env:
+      - name: BP_JVM_VERSION
+        value: "17.*"
+  source:
+    git:
+      url: https://github.com/laidbackware/tanzu-java-web-app.git
+      ref:
+        branch: main
